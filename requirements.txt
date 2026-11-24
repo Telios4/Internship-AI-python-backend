@@ -16,3 +16,4 @@ python-jose[cryptography]
 python-dotenv
 pypdf
 passlib[argon2]
+requests
