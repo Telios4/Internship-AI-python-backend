@@ -133,6 +133,10 @@ def test_limits_number_of_recommendations(candidate_profile):
             title=f"Internship {number}",
             organization=f"Company {number}",
             description="A sample internship.",
+            required_skills=["Python", "SQL"],
+            preferred_skills=["Git"],
+            education_requirements=["Computer Science"],
+            minimum_experience_months=0,
         )
         for number in range(1, 4)
     ]
@@ -142,7 +146,6 @@ def test_limits_number_of_recommendations(candidate_profile):
     )
 
     assert len(results) == 2
-
 
 def test_zero_top_n_returns_empty_list(
     candidate_profile, internship
@@ -170,3 +173,69 @@ def test_rejects_non_integer_top_n(candidate_profile, internship):
 
 def test_empty_internship_list_returns_empty_list(candidate_profile):
     assert recommend_internships(candidate_profile, []) == []
+def test_excludes_internships_without_matching_criteria(
+    candidate_profile
+):
+    internship = Internship(
+        id="INT-NO-DATA",
+        title="General Internship",
+        organization="Company A",
+        description="An internship without structured requirements.",
+    )
+
+    results = recommend_internships(
+        candidate_profile,
+        [internship]
+    )
+
+    assert results == []
+def test_recommends_internships_with_matching_criteria(
+    candidate_profile
+):
+    internship = Internship(
+        id="INT-VALID",
+        title="Python Developer Intern",
+        organization="Company B",
+        description="Assist with Python development.",
+        required_skills=["Python", "SQL"],
+        preferred_skills=["Git"],
+        education_requirements=["Computer Science"],
+    )
+
+    results = recommend_internships(
+        candidate_profile,
+        [internship]
+    )
+
+    assert len(results) == 1
+    assert results[0]["internship_id"] == "INT-VALID"
+    assert results[0]["overall_score"] == 100.0
+def test_filters_incomplete_internships_before_ranking(
+    candidate_profile
+):
+    incomplete = Internship(
+        id="INT-INCOMPLETE",
+        title="General Internship",
+        organization="Company A",
+        description="No structured requirements.",
+    )
+
+    complete = Internship(
+        id="INT-COMPLETE",
+        title="Software Developer Intern",
+        organization="Company B",
+        description="Software development opportunity.",
+        required_skills=["Python", "Java"],
+        preferred_skills=["Git", "Docker"],
+        education_requirements=["Computer Science"],
+    )
+
+    results = recommend_internships(
+        candidate_profile,
+        [incomplete, complete],
+        top_n=1
+    )
+
+    assert len(results) == 1
+    assert results[0]["internship_id"] == "INT-COMPLETE"
+    assert results[0]["overall_score"] < 100

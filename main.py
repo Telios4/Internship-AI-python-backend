@@ -296,14 +296,14 @@ async def upload_my_cv(
     tags=["Recommendations"],
 )
 def get_my_recommendations(
-    top_n: int = 10,
+    top_n: int = 100,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    if top_n < 1 or top_n > 50:
+    if top_n < 1 or top_n > 100:
         raise HTTPException(
             status_code=400,
-            detail="top_n must be between 1 and 50.",
+            detail="top_n must be between 1 and 100.",
         )
 
     latest_cv = (
@@ -624,17 +624,17 @@ async def analyze_cv(file: UploadFile = File(...)):
 )
 def get_recommendations(
     candidate_profile: dict,
-    top_n: int = 10,
+    top_n: int = 100,
 ):
     """
     Generate ranked internship recommendations
     using the candidate's structured profile.
     """
 
-    if top_n < 1 or top_n > 50:
+    if top_n < 1 or top_n > 100:
         raise HTTPException(
             status_code=400,
-            detail="top_n must be between 1 and 50.",
+            detail="top_n must be between 1 and 100.",
         )
 
     try:

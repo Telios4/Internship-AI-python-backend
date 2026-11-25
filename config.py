@@ -85,9 +85,9 @@ CORS_ALLOW_HEADERS = ["*"]
 # RECOMMENDATION CONFIGURATION
 # --------------------------------------------------
 
-DEFAULT_RECOMMENDATION_LIMIT = 10
+DEFAULT_RECOMMENDATION_LIMIT = 100
 
-MAX_RECOMMENDATION_LIMIT = 50
+MAX_RECOMMENDATION_LIMIT = 100
 
 
 # --------------------------------------------------

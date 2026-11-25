@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MobileApplicationProject" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MobileApplicationProject.Splash"
+        parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground">
+            #17263F
+        </item>
+
+        <item name="windowSplashScreenAnimatedIcon">
+            @mipmap/ic_launcher
+        </item>
+
+        <item name="postSplashScreenTheme">
+            @android:style/Theme.Material.Light.NoActionBar
+        </item>
+    </style>
+</resources>
